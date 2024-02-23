@@ -3,7 +3,7 @@ const app = express();
 
 //MONGODB CONNECTION
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://vivek:werent@cluster0.dewuoen.mongodb.net/?retryWrites=true&w=majority";
+const uri = "mongodb+srv://<username>:<password>@cluster0.dewuoen.mongodb.net/?retryWrites=true&w=majority";
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
