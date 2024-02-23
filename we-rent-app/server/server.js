@@ -28,10 +28,12 @@ run().catch(console.dir);
 
 
 //referring to rating js file
-const rating = require('../routes/rating');
+const rating = require('./routes/rating');
 
 //defining the base of other api endpoints
 app.use('/api/', rating);
 
 // http://localhost:2345
 app.listen(2345);
+console.log("The server is running now!");
+console.log("click here to see the sample data in c1 ----> http://localhost:2345/api/c1");
