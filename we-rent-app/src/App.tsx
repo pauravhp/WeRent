@@ -1,17 +1,11 @@
-import {
-	Typography,
-	Box,
-	Container,
-	Paper,
-	styled,
-	AppBar,
-} from "@mui/material";
+import { Typography, Container, styled, AppBar } from "@mui/material";
 import { useEffect, useState } from "react";
 
 interface Listing {
 	address: string;
 	price: number;
-	numBedrooms: number;
+	num_bedrooms: number;
+	location: { type: string; coordinates: number[] }; // Within coordinates, longitude is first
 }
 
 const fetchDataFromDb = async (
@@ -35,7 +29,10 @@ const App = () => {
 	const [listings, setListings] = useState<Listing[] | null>(null);
 
 	useEffect(() => {
-		fetchDataFromDb("/api/listings", setListings);
+		fetchDataFromDb(
+			"/api/listings/-123.3664977167386/48.42532007264327",
+			setListings
+		);
 	}, []);
 
 	return (
@@ -53,9 +50,9 @@ const App = () => {
 						sx={{ p: 1, textAlign: "center", margin: 10 }}
 						key={i}
 					>
-						{listing.address}
-						{listing.price}
-						{listing.numBedrooms}
+						{listing.address}, {listing.price}, {listing.num_bedrooms},
+						coordinates: {listing.location.coordinates[0]},{" "}
+						{listing.location.coordinates[1]}
 					</Typography>
 				))}
 		</Container>
