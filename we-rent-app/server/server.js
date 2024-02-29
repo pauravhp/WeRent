@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const { calculateRatings } = require("./rating");
 const PORT = process.env.PORT || 3001;
 
 app.use(express.json());
@@ -54,18 +55,20 @@ sortedListingsRouter.get(
 		const longitude = parseFloat(req.params.longitude);
 		const latitude = parseFloat(req.params.latitude);
 
-		const listings = await collection
-			.find({
-				location: {
-					$near: {
-						$geometry: {
-							type: "Point",
-							coordinates: [longitude, latitude],
+		const listings = calculateRatings(
+			await collection
+				.find({
+					location: {
+						$near: {
+							$geometry: {
+								type: "Point",
+								coordinates: [longitude, latitude],
+							},
 						},
 					},
-				},
-			})
-			.toArray();
+				})
+				.toArray()
+		);
 
 		res.json(listings);
 		console.log("The listings: ", listings);
@@ -87,9 +90,6 @@ allListingsRouter.get(
 // Use routers
 app.use("/api/listings", sortedListingsRouter);
 app.use("/api/listings", allListingsRouter);
-
-//referring to rating js file
-// const rating = require("./routes/rating");
 
 // Connect to MongoDB and start server
 connectToMongoDB().then(() => {

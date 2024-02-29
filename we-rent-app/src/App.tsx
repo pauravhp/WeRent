@@ -1,12 +1,7 @@
 import { Typography, Container, styled, AppBar } from "@mui/material";
 import { useEffect, useState } from "react";
 
-interface Listing {
-	address: string;
-	price: number;
-	num_bedrooms: number;
-	location: { type: string; coordinates: number[] }; // Within coordinates, longitude is first
-}
+import { Listing } from "../server/rating";
 
 const fetchDataFromDb = async (
 	endpoint: string,
@@ -52,7 +47,7 @@ const App = () => {
 					>
 						{listing.address}, {listing.price}, {listing.num_bedrooms},
 						coordinates: {listing.location.coordinates[0]},{" "}
-						{listing.location.coordinates[1]}
+						{listing.location.coordinates[1]}, rating: {listing.rating}
 					</Typography>
 				))}
 		</Container>
