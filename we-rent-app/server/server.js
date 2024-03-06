@@ -49,11 +49,13 @@ async function connectToMongoDB() {
 // Define route handler for "/api/listings/:longitude/:latitude"
 const sortedListingsRouter = express.Router();
 sortedListingsRouter.get(
-	"/:longitude/:latitude",
+	"/:longitude1/:latitude1/:longitude2/:latitude2",
 	withMongoDB(async (req, res, db) => {
 		const collection = db.collection("Listings");
-		const longitude = parseFloat(req.params.longitude);
-		const latitude = parseFloat(req.params.latitude);
+		const long1 = parseFloat(req.params.longitude1);
+		const lat1 = parseFloat(req.params.latitude1);
+		const long2 = parseFloat(req.params.longitude2);
+		const lat2 = parseFloat(req.params.latitude2);
 
 		const listings = calculateRatings(
 			await collection
@@ -62,12 +64,14 @@ sortedListingsRouter.get(
 						$near: {
 							$geometry: {
 								type: "Point",
-								coordinates: [longitude, latitude],
+								coordinates: [long1, lat1],
 							},
 						},
 					},
 				})
-				.toArray()
+				.toArray(),
+			{ longitude: long1, latitude: lat1 },
+			{ longitude: long2, latitude: lat2 }
 		);
 
 		res.json(listings);
