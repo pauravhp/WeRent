@@ -1,7 +1,9 @@
-import { Typography, Container, styled, AppBar } from "@mui/material";
+import { Typography, Container, styled, AppBar, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 
 import { Listing } from "../server/rating";
+import ListingCard from "./components/ListingCard";
+import DarkMode from "./components/Darkmode";
 
 const fetchDataFromDb = async (
 	endpoint: string,
@@ -31,26 +33,25 @@ const App = () => {
 	}, []);
 
 	return (
-		<Container>
-			<MyBar sx={{ p: 1, textAlign: "left" }}>
-				<Typography variant="h4" sx={{ p: 1, textAlign: "left" }}>
-					{" "}
-					WERENT
-				</Typography>
-			</MyBar>
-			{listings &&
-				listings.map((listing, i) => (
-					<Typography
-						variant="h4"
-						sx={{ p: 1, textAlign: "center", margin: 10 }}
-						key={i}
-					>
-						{listing.address}, {listing.price}, {listing.num_bedrooms},
-						coordinates: {listing.location.coordinates[0]},{" "}
-						{listing.location.coordinates[1]}, rating: {listing.rating}
+		<>
+			<Container>
+				<MyBar sx={{ p: 1, textAlign: "left" }}>
+					<Typography variant="h4" sx={{ p: 1, textAlign: "left" }}>
+						{" "}
+						WeRent
 					</Typography>
-				))}
-		</Container>
+					<div style={{ position: 'absolute', top: '10px', right: '10px' }}>
+						<DarkMode />
+					</div>
+				</MyBar>
+
+			</Container>
+			<Grid container spacing={2} my={3} padding={"65px"}>
+				{listings &&
+					listings.map((listing, i) => <ListingCard listing={listing} i={i} />)}
+			</Grid>
+
+		</>
 	);
 };
 
