@@ -57,7 +57,7 @@ sortedListingsRouter.get(
 		const long2 = parseFloat(req.params.longitude2);
 		const lat2 = parseFloat(req.params.latitude2);
 
-		const listings = calculateRatings(
+		const listings = await calculateRatings(
 			await collection
 				.find({
 					location: {
