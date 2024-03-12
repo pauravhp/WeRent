@@ -14,7 +14,7 @@ type Coordinate = {
 	latitude: number;
 };
 
-type distanceMatrix = {
+type DistanceMatrix = {
 	university: {
 		location1: number;
 		location2: number;
@@ -66,7 +66,7 @@ function constructLocationBodyString(
 	});
 }
 
-function constructDistanceMatrix(matrix: any): distanceMatrix {
+function constructDistanceMatrix(matrix: any): DistanceMatrix {
 	return {
 		university: {
 			location1: matrix[0][1],
@@ -83,19 +83,17 @@ function constructDistanceMatrix(matrix: any): distanceMatrix {
 	};
 }
 
-function getDistanceMatrix(
+async function getDistanceMatrix(
 	coord1: Coordinate,
 	coord2: Coordinate,
 	modeOfTransport: string
-): Promise<distanceMatrix> {
-	let result;
-	return makeORSRequest(
+): Promise<DistanceMatrix> {
+	return await makeORSRequest(
 		`matrix/${modeOfTransport}`,
 		constructLocationBodyString(universityCoord, coord1, coord2)
 	)
 		.then((payload: any) => {
-			result = payload.durations;
-			return constructDistanceMatrix(result);
+			return constructDistanceMatrix(payload.durations);
 		})
 		.catch((error) => {
 			console.error(error);
@@ -103,11 +101,85 @@ function getDistanceMatrix(
 		});
 }
 
-export function calculateRatings(
+async function getDistanceMatrixForAllModes(
+	coord1: Coordinate,
+	coord2: Coordinate
+): Promise<{
+	driving: DistanceMatrix;
+	walking: DistanceMatrix;
+	cycling: DistanceMatrix;
+}> {
+	let allDistanceMatrix: {
+		driving: DistanceMatrix;
+		walking: DistanceMatrix;
+		cycling: DistanceMatrix;
+	} = {
+		driving: {
+			university: {
+				location1: 0,
+				location2: 0,
+			},
+			location1: {
+				university: 0,
+				location2: 0,
+			},
+			location2: {
+				university: 0,
+				location1: 0,
+			},
+		},
+		walking: {
+			university: {
+				location1: 0,
+				location2: 0,
+			},
+			location1: {
+				university: 0,
+				location2: 0,
+			},
+			location2: {
+				university: 0,
+				location1: 0,
+			},
+		},
+		cycling: {
+			university: {
+				location1: 0,
+				location2: 0,
+			},
+			location1: {
+				university: 0,
+				location2: 0,
+			},
+			location2: {
+				university: 0,
+				location1: 0,
+			},
+		},
+	};
+	allDistanceMatrix.driving = await getDistanceMatrix(
+		coord1,
+		coord2,
+		"driving-car"
+	);
+	allDistanceMatrix.walking = await getDistanceMatrix(
+		coord1,
+		coord2,
+		"foot-walking"
+	);
+	allDistanceMatrix.cycling = await getDistanceMatrix(
+		coord1,
+		coord2,
+		"cycling-regular"
+	);
+	return allDistanceMatrix;
+}
+
+export async function calculateRatings(
 	listings: Listing[],
 	coord1: Coordinate,
 	coord2: Coordinate
-): Listing[] {
+): Promise<Listing[]> {
 	const listingsWithRatings: Listing[] = listings.map(
 		(listing: Listing, index) => {
 			listing.rating = parseFloat(
@@ -117,12 +189,9 @@ export function calculateRatings(
 		}
 	);
 	// Uncomment these lines to test ORS distance matrix functinality
-	// getDistanceMatrix(coord1, coord2, "driving-car")
-	// 	.then((distanceMatrix) => {
-	// 		console.log(distanceMatrix);
-	// 	})
-	// 	.catch((error) => {
-	// 		console.error(error);
-	// 	});
+	// console.log("***************************************");
+	// const result = await getDistanceMatrixForAllModes(coord1, coord2);
+	// console.log(result);
+	// console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 	return listingsWithRatings;
 }
