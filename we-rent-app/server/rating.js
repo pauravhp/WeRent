@@ -155,55 +155,14 @@ function getDistanceMatrixForAllModes(coord1, coord2) {
                     return [4 /*yield*/, getDistanceMatrix(coord1, coord2, "driving-car")];
                 case 1:
                     _a.driving = _d.sent();
-                    // getDistanceMatrix(coord1, coord2, "driving-car")
-                    // 	.then((distanceMatrix) => {
-                    // 		// console.log(distanceMatrix);
-                    // 		allDistanceMatrix.driving = distanceMatrix;
-                    // 	})
-                    // 	.catch((error) => {
-                    // 		console.error(error);
-                    // 	});
                     _b = allDistanceMatrix;
                     return [4 /*yield*/, getDistanceMatrix(coord1, coord2, "foot-walking")];
                 case 2:
-                    // getDistanceMatrix(coord1, coord2, "driving-car")
-                    // 	.then((distanceMatrix) => {
-                    // 		// console.log(distanceMatrix);
-                    // 		allDistanceMatrix.driving = distanceMatrix;
-                    // 	})
-                    // 	.catch((error) => {
-                    // 		console.error(error);
-                    // 	});
                     _b.walking = _d.sent();
-                    // getDistanceMatrix(coord1, coord2, "walking-foot")
-                    // 	.then((distanceMatrix) => {
-                    // 		// console.log(distanceMatrix);
-                    // 		allDistanceMatrix.walking = distanceMatrix;
-                    // 	})
-                    // 	.catch((error) => {
-                    // 		console.error(error);
-                    // 	});
                     _c = allDistanceMatrix;
                     return [4 /*yield*/, getDistanceMatrix(coord1, coord2, "cycling-regular")];
                 case 3:
-                    // getDistanceMatrix(coord1, coord2, "walking-foot")
-                    // 	.then((distanceMatrix) => {
-                    // 		// console.log(distanceMatrix);
-                    // 		allDistanceMatrix.walking = distanceMatrix;
-                    // 	})
-                    // 	.catch((error) => {
-                    // 		console.error(error);
-                    // 	});
                     _c.cycling = _d.sent();
-                    // getDistanceMatrix(coord1, coord2, "cycling-regular")
-                    // 	.then((distanceMatrix) => {
-                    // 		// console.log(distanceMatrix);
-                    // 		allDistanceMatrix.cycling = distanceMatrix;
-                    // 	})
-                    // 	.catch((error) => {
-                    // 		console.error(error);
-                    // 	});
-                    // console.log(allDistanceMatrix);
                     return [2 /*return*/, allDistanceMatrix];
             }
         });
@@ -211,30 +170,18 @@ function getDistanceMatrixForAllModes(coord1, coord2) {
 }
 function calculateRatings(listings, coord1, coord2) {
     return __awaiter(this, void 0, void 0, function () {
-        var listingsWithRatings, result;
+        var listingsWithRatings;
         return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    listingsWithRatings = listings.map(function (listing, index) {
-                        listing.rating = parseFloat(((10 / listings.length) * (listings.length - index)).toFixed(2)); // Limits the float to 2 decimal places
-                        return listing;
-                    });
-                    // Uncomment these lines to test ORS distance matrix functinality
-                    // getDistanceMatrix(coord1, coord2, "driving-car")
-                    // 	.then((distanceMatrix) => {
-                    // 		console.log(distanceMatrix);
-                    // 	})
-                    // 	.catch((error) => {
-                    // 		console.error(error);
-                    // 	});
-                    console.log("***************************************");
-                    return [4 /*yield*/, getDistanceMatrixForAllModes(coord1, coord2)];
-                case 1:
-                    result = _a.sent();
-                    console.log(result);
-                    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                    return [2 /*return*/, listingsWithRatings];
-            }
+            listingsWithRatings = listings.map(function (listing, index) {
+                listing.rating = parseFloat(((10 / listings.length) * (listings.length - index)).toFixed(2)); // Limits the float to 2 decimal places
+                return listing;
+            });
+            // Uncomment these lines to test ORS distance matrix functinality
+            // console.log("***************************************");
+            // const result = await getDistanceMatrixForAllModes(coord1, coord2);
+            // console.log(result);
+            // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            return [2 /*return*/, listingsWithRatings];
         });
     });
 }
