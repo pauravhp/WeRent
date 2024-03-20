@@ -1,9 +1,9 @@
-import { Typography, Container, styled, AppBar, Grid } from "@mui/material";
+import { Typography, Container, styled, AppBar, Grid, Box } from "@mui/material";
 import { useEffect, useState } from "react";
 
 import { Listing } from "../server/rating";
-import ListingCard from "./components/ListingCard";
-import DarkMode from "./components/Darkmode";
+import ListingCard from "./Components/ListingCard";
+import DarkMode from "./Components/DarkMode";
 
 const fetchDataFromDb = async (
 	endpoint: string,
@@ -35,16 +35,13 @@ const App = () => {
 	return (
 		<>
 			<Container>
-				<MyBar sx={{ p: 1, textAlign: "left" }}>
-					<Typography variant="h4" sx={{ p: 1, textAlign: "left" }}>
-						{" "}
-						WeRent
-					</Typography>
-					<div style={{ position: 'absolute', top: '10px', right: '10px' }}>
+				<MyBar >
+					<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 1 }}>
+						<Typography variant="h4" sx={{ p: 1}}>WeRent</Typography>
 						<DarkMode />
-					</div>
-				</MyBar>
+					</Box>
 
+				</MyBar>
 			</Container>
 			<Grid container spacing={2} my={3} padding={"65px"}>
 				{listings &&

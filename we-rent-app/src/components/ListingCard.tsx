@@ -93,12 +93,6 @@ const ListingCard: React.FC<Props> = ({ listing, i }) => {
                         <Typography
                             variant="h6"
                             color="textPrimary"
-                            sx={{
-                                bgcolor: deepOrange[500],
-                                borderRadius: "10px",
-                                paddingLeft: "10px",
-                                paddingRight: "10px",
-                            }}
                         >
                             {listing.rating}
                         </Typography>
