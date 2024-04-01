@@ -8,9 +8,12 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 
+import "./App.css";
 import { Listing } from "../server/rating";
-import ListingCard from "./components/ListingCard";
+// import ListingCard from "./components/ListingCard";
 import DarkMode from "./components/Darkmode";
+import ListingSwipe from "./components/ListingSwipe";
+import FilterBar from "./components/FilterBar";
 
 const fetchDataFromDb = async (
 	endpoint: string,
@@ -42,26 +45,9 @@ const App = () => {
 	return (
 		<>
 			<Container>
-				<MyBar>
-					<Box
-						sx={{
-							display: "flex",
-							justifyContent: "space-between",
-							alignItems: "center",
-							p: 1,
-						}}
-					>
-						<Typography variant="h4" sx={{ p: 1 }}>
-							WeRent
-						</Typography>
-						<DarkMode />
-					</Box>
-				</MyBar>
+				<FilterBar />
+				{listings && <ListingSwipe listings={listings} />}
 			</Container>
-			<Grid container spacing={2} my={3} padding={"65px"}>
-				{listings &&
-					listings.map((listing, i) => <ListingCard listing={listing} i={i} />)}
-			</Grid>
 		</>
 	);
 };

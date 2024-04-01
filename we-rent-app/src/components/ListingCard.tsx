@@ -1,106 +1,38 @@
-import {
-    Box,
-    Card,
-    CardContent,
-    CardActions,
-    Typography,
-    Button,
-    Stack,
-    Grid,
-} from "@mui/material";
-import {
-    FavoriteBorderSharp as FavoriteBorderSharpIcon,
-    ThumbDownOffAltSharp as ThumbDownOffAltSharpIcon,
-    BookmarkBorderSharp as BookmarkBorderSharpIcon,
-    StraightenSharp as StraightenSharpIcon
-} from "@mui/icons-material";
+import { IconButton } from "@mui/material";
 import { Listing } from "../../server/rating";
-import { deepOrange } from "@mui/material/colors";
-import KingBedTwoToneIcon from "@mui/icons-material/KingBedTwoTone";
-import BathtubIcon from "@mui/icons-material/Bathtub";
-import Divider from "@mui/material/Divider";
-
+import { useState } from "react";
+import ReactCardFlip from "react-card-flip";
+import FrontListingCard from "./FrontListingCard";
+import FlippedListingCard from "./FlippedListingCard";
+import ReadMoreIcon from "@mui/icons-material/ReadMore";
+import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
 
 interface Props {
-    listing: Listing;
-    i: number;
+	listing: Listing;
 }
-const ListingCard: React.FC<Props> = ({ listing, i }) => {
-    return (
-        <Grid item key={i} xs={3} sm={3} md={3}>
-            <Card elevation={12}>
-                <CardContent>
-                    <Stack direction="column" spacing={1}>
-                        <Box>
-                            <Typography variant="h4" color="textPrimary">
-                                ${listing.price}
-                            </Typography>
-                        </Box>
-                        <Box>
-                            <Typography
-                                variant="h6"
-                                color="textSecondary"
-                                sx={{ fontWeight: "bold" }}
-                            >
-                                {listing.address}
-                            </Typography>
-                        </Box>
-                        <Grid container spacing={1} alignItems="center">
-                            <Grid item>
-                                <Typography variant="body1">{listing.num_bedrooms}</Typography>
-                            </Grid>
-                            <Grid item>
-                                <KingBedTwoToneIcon />
-                            </Grid>
-                            <Divider
-                                orientation="vertical"
-                                variant="middle"
-                                flexItem
-                                color="gold"
-                            />
-                            <Grid item>
-                                <BathtubIcon />
-                            </Grid>
-                            <Divider
-                                orientation="vertical"
-                                variant="middle"
-                                flexItem
-                                color="gold"
-                            />
-                            <Grid item>
-                                <StraightenSharpIcon />
-                            </Grid>
-                            <Divider
-                                orientation="vertical"
-                                variant="middle"
-                                flexItem
-                                color="gold"
-                            />
-                        </Grid>
-                    </Stack>
-                </CardContent>
-                <CardActions>
-                    <Stack direction="row" spacing={1}>
-                        <Button>
-                            <FavoriteBorderSharpIcon />
-                        </Button>
-                        <Button>
-                            <ThumbDownOffAltSharpIcon />
-                        </Button>
-                        <Button>
-                            <BookmarkBorderSharpIcon />
-                        </Button>
-                        <Typography
-                            variant="h6"
-                            color="textPrimary"
-                        >
-                            {listing.rating}
-                        </Typography>
-                    </Stack>
-                </CardActions>
-            </Card>
-        </Grid>
-    );
+const ListingCard: React.FC<Props> = ({ listing }) => {
+	const [isFlipped, setIsFlipped] = useState<boolean>(false);
+
+	const handleFlip = (e: any) => {
+		setIsFlipped((prevIsFlipped) => !prevIsFlipped);
+	};
+
+	return (
+		<ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
+			<div>
+				<FrontListingCard listing={listing} />
+				<IconButton onClick={handleFlip} color="primary" size="large">
+					<ReadMoreIcon />
+				</IconButton>
+			</div>
+			<div>
+				<FlippedListingCard listing={listing} />
+				<IconButton onClick={handleFlip} color="error" size="large">
+					<KeyboardReturnIcon />
+				</IconButton>
+			</div>
+		</ReactCardFlip>
+	);
 };
 
 export default ListingCard;
